@@ -26,12 +26,12 @@ public class CopyGenomeDirectoryToNewFolder {
 			line = br.readLine();
 		}
 		br.close();
+		removePlasmidGenomicFiles(basePath);
 	}
 	
 	public static void removePlasmidGenomicFiles(String basePath)
 	{
 		File dir = new File(basePath);
-		//dir.len
 		File [] files = dir.listFiles();
 		for(int i=0;i<files.length;i++)
 		{
@@ -40,10 +40,23 @@ public class CopyGenomeDirectoryToNewFolder {
 				File [] genomefiles = files[i].listFiles();
 				if(genomefiles.length > 1)
 				{
-					
+					long longest = 0;
+					String longestFile = "";
 					for(int j=0;j<genomefiles.length;j++)
 					{
-						
+						if(genomefiles[j].length() > longest)
+						{
+							longest = genomefiles[j].length();
+							longestFile = genomefiles[j].getPath();
+						}
+					}
+					for(int j=0;j<genomefiles.length;j++)
+					{
+						if(!genomefiles[j].getPath().equals(longestFile))
+						{
+							File delete = new File(genomefiles[j].getPath());
+							delete.delete();
+						}
 					}
 				}
 			}

@@ -71,11 +71,11 @@ public class GetCompleteGenomesFromPatric {
 						String accessionNumber = (accessionNumbers.split(",")[0].contains(".")?accessionNumbers.split(",")[0].split("\\.")[0]:accessionNumbers.split(",")[0]); 
 						if(dirName.contains(accessionNumber))
 						{
-							if(accessionNumber.equals("NC_012034"))
+							/*if(accessionNumber.equals("NC_012034"))
 							{
 								System.out.println("It is there");
 								System.out.println(files[i].getPath());
-							}
+							}*/
 							orgPathMap.put(accessionNumbers,files[i].getPath());
 							break;
 						}
