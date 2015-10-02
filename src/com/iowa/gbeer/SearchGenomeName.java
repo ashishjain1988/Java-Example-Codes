@@ -27,12 +27,24 @@ public class SearchGenomeName {
 		br.close();
 		File dir = new File("/home/jain/Bacterial_Genomic_Data_NCBI/");
 		File [] files = dir.listFiles();
+		searchGenomeDir(files, orgPathMap);
+		PrintWriter pw = new PrintWriter("orgs_Genomes_Map.txt");
+		for(Entry<String, String> entry : orgPathMap.entrySet())
+		{
+			System.out.println(entry.getKey()+"\t"+entry.getValue());
+			pw.println(entry.getKey()+"\t"+entry.getValue());
+		}
+		pw.close();
+	}
+	
+	public static void searchGenomeDir(File[] files,Map<String, String> orgPathMap)
+	{
 		for(int i=0;i<files.length;i++)
 		{
 			if(files[i].isDirectory())
 			{
 				String dirName = files[i].getName();
-				for(String org:orgNames)
+				for(String org:orgPathMap.keySet())
 				{
 					if(dirName.contains(org))
 					{
@@ -41,13 +53,5 @@ public class SearchGenomeName {
 				}
 			}
 		}
-		PrintWriter pw = new PrintWriter("orgs_Genomes_Map.txt");
-		for(Entry<String, String> entry : orgPathMap.entrySet())
-		{
-			System.out.println(entry.getKey()+"\t"+entry.getValue());
-			pw.println(entry.getKey()+"\t"+entry.getValue());
-		}
-		pw.close();
-		
 	}
 }
