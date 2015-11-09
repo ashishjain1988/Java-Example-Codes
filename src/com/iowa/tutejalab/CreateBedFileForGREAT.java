@@ -23,20 +23,28 @@ public class CreateBedFileForGREAT {
 			String geneName = lineData[0].trim();
 			String chromosome = lineData[2].trim();
 			String strand = lineData[3].trim();
-			String start = lineData[4].trim();
-			String stop = lineData[5].trim();
+			int start = Integer.parseInt(lineData[4].trim());
+			int stop = Integer.parseInt(lineData[5].trim());
+			if(strand.equals("+"))
+			{
+				start += 500;
+			}else
+			{
+				stop += 500;
+			}
 			dataList = new ArrayList<>();
 			dataList.add(chromosome);
 			dataList.add(strand);
-			dataList.add(start);
-			dataList.add(stop);
+			dataList.add(String.valueOf(start));
+			dataList.add(String.valueOf(stop));
 			geneLocationMap.put(geneName,dataList);
 			line = br.readLine();
 		}
 		br.close();
-		br = new BufferedReader(new FileReader("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/Female_Male_Diff/DEG_genes.txt"));
+		br = new BufferedReader(new FileReader("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/InVivo_Male_Diff/Gene_NE-IV_E-Male/DEG_genes.txt"));
 		line = br.readLine();
-		PrintWriter pw = new PrintWriter("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/Female_Male_Diff/file.bed");
+		PrintWriter pw = new PrintWriter("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/InVivo_Male_Diff/Gene_NE-IV_E-Male/file.bed");
+		int count = 0;
 		while(line!=null)
 		{
 			String gene = line.trim();
@@ -50,10 +58,11 @@ public class CreateBedFileForGREAT {
 			}
 			for(int i=0;i<geneList.length;i++)
 			{
+				count++;
 				if(geneLocationMap.containsKey(geneList[i]))
 				{
 					dataList = geneLocationMap.get(geneList[i]);
-					pw.println(dataList.get(0)+"\t"+dataList.get(2)+"\t"+dataList.get(3)+"\t"+gene+"\t1\t"+dataList.get(1));
+					pw.println(dataList.get(0)+"\t"+dataList.get(2)+"\t"+dataList.get(3)+"\t"+geneList[i]+"\t1\t"+dataList.get(1));
 				}else
 				{
 					System.out.println(geneList[i]);
@@ -61,6 +70,7 @@ public class CreateBedFileForGREAT {
 			}
 			line = br.readLine();
 		}
+		System.out.println(count);
 		br.close();
 		pw.close();
 		
