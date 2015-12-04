@@ -1,5 +1,8 @@
 package com.iowa.tutejalab;
-
+/**
+ * @author Ashish Jain
+ * 
+ */
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,7 +16,7 @@ public class GetFoldChangeForPlacentaGenes {
 		BufferedReader br = new BufferedReader(new FileReader("/home/jain/Downloads/Combined_GeneNames.txt"));
 		List<String> geneList = new ArrayList<>();
 		String line = br.readLine();
-		String output = "/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output_New/Cuffdiff_Output_New/InVivo_InVitro";
+		String output = "/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output_New/Cuffdiff_Output_New/InVivo_InVitro_Diff_Study/Gene_E-IV_NE-Cell";
 		while(line!=null)
 		{
 			geneList.add(line.trim());
@@ -27,7 +30,7 @@ public class GetFoldChangeForPlacentaGenes {
 		while(line!=null)
 		{
 			String lineData[] = line.split("\t");
-			if(geneList.contains(lineData[2]))
+			if(geneList.contains(lineData[2]) && lineData[13].equals("yes"))
 			{
 				pw.println(lineData[2]+"\t"+lineData[7]+"\t"+lineData[8]+"\t"+(Float.valueOf(lineData[7])/Float.valueOf(lineData[8]))+"\t"+lineData[9]);
 			}

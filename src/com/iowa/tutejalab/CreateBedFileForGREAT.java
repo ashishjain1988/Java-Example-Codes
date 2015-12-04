@@ -1,5 +1,9 @@
 package com.iowa.tutejalab;
-
+/**
+ * @author Ashish Jain
+ * This file is used to create the bed file, used as a input for
+ * the GREAT GO Database. This program takes input the list of genes.
+ */
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,6 +21,7 @@ public class CreateBedFileForGREAT {
 		Map<String, List<String>> geneLocationMap = new HashMap<>();
 		List<String> dataList;
 		String line = br.readLine();
+		String output = "/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output_New/Cuffdiff_Output_New/InVivo_InVitro_Diff_Study";
 		while(line!=null)
 		{
 			String lineData[] = line.split("\t");
@@ -27,10 +32,12 @@ public class CreateBedFileForGREAT {
 			int stop = Integer.parseInt(lineData[5].trim());
 			if(strand.equals("+"))
 			{
-				start += 500;
+				start -= 500;
+				stop = start + 500;
 			}else
 			{
 				stop += 500;
+				start = stop -500;
 			}
 			dataList = new ArrayList<>();
 			dataList.add(chromosome);
@@ -41,10 +48,11 @@ public class CreateBedFileForGREAT {
 			line = br.readLine();
 		}
 		br.close();
-		br = new BufferedReader(new FileReader("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/InVivo_Male_Diff/Gene_NE-IV_E-Male/DEG_genes.txt"));
+		br = new BufferedReader(new FileReader(output+"/DEG_genes.txt"));
 		line = br.readLine();
-		PrintWriter pw = new PrintWriter("/home/jain/Placenta_Geo_Dataset/Cuffdiff_Output/InVivo_Male_Diff/Gene_NE-IV_E-Male/file.bed");
+		PrintWriter pw = new PrintWriter(output+"/file.bed");
 		int count = 0;
+		int unann = 0;
 		while(line!=null)
 		{
 			String gene = line.trim();
@@ -62,15 +70,17 @@ public class CreateBedFileForGREAT {
 				if(geneLocationMap.containsKey(geneList[i]))
 				{
 					dataList = geneLocationMap.get(geneList[i]);
-					pw.println(dataList.get(0)+"\t"+dataList.get(2)+"\t"+dataList.get(3)+"\t"+geneList[i]+"\t1\t"+dataList.get(1));
+					pw.println(dataList.get(0)+"\t"+dataList.get(2)+"\t"+dataList.get(3)+"\t"+geneList[i]);
 				}else
 				{
 					System.out.println(geneList[i]);
+					unann += 1;
 				}
 			}
 			line = br.readLine();
 		}
 		System.out.println(count);
+		System.out.println(unann);
 		br.close();
 		pw.close();
 		
